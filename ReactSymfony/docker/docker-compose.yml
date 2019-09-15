@@ -1,16 +1,15 @@
 version: '3'
 
 services:
-  apache:
-    build: ./apache
-    container_name: reactsymfony_apache
+  nginx:
+    build: ./nginx
+    container_name: reactsymfony_nginx
     ports:
       - 80:80
+    links:
+      - php
     volumes:
-      - ./apache/config/vhosts:/etc/apache2/sites-enabled
-      - ../app:/home/www/app
-    depends_on:
-    - php
+      - ./nginx/logs/nginx:/var/log/nginx:cached
 
   mysql:
     image: mysql
@@ -28,6 +27,6 @@ services:
     build: ./php
     container_name: reactsymfony_php
     volumes:
-      - ../app:/home/www/app
+      - ${SYMFONY_APP_PATH}:/home/www/app
     depends_on:
       - mysql
