@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  apache:
+    build: ./apache
+    container_name: reactsymfony_apache
+    ports:
+      - 80:80
+    volumes:
+      - ./apache/config/vhosts:/etc/apache2/sites-enabled
+      - ../app:/home/www/app
+    depends_on:
+    - php
+
+  mysql:
+    image: mysql
+    command: "--default-authentication-plugin=mysql_native_password"
+    container_name: reactsymfony_mysql
+    volumes:
+      - .data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  php:
+    build: ./php
+    container_name: reactsymfony_php
+    volumes:
+      - ../app:/home/www/app
+    depends_on:
+      - mysql
