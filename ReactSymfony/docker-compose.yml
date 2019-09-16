@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  apache:
+    build: ./docker/apache
+    container_name: reactsymfony_apache
+    environment:
+      NGINX_SYMFONY_HOST: ${NGINX_SYMFONY_HOST}
+      NGINX_SYMFONY_DIRE: ${NGINX_SYMFONY_DIRE}
+    ports:
+      - 80:80
+    volumes:
+      - ${SYMFONY_APP_PATH}:/www/symfony/app
+      - ./docker/apache/config/vhosts:/etc/apache2/sites-enabled
+    depends_on:
+      - php
+
+  mysql:
+    image: mysql
+    container_name: reactsymfony_mysql
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./docker/.data/db:/var/lib/mysql
+    command:
+      - "--default-authentication-plugin=mysql_native_password"
+
+  php:
+    build: ./docker/php
+    container_name: reactsymfony_php
+    volumes:
+      - ${SYMFONY_APP_PATH}:/www/symfony/app
+    depends_on:
+      - mysql
