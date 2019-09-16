@@ -15,3 +15,7 @@
 
 # ---[symfony/web-server-bundle]---
 /.web-server-pid
+
+# ---[JavaScript]---
+/public/build
+/node_modules
