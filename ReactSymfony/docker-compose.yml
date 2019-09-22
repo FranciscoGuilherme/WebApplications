@@ -5,8 +5,8 @@ services:
     build: ./docker/apache
     container_name: reactsymfony_apache
     environment:
-      NGINX_SYMFONY_HOST: ${NGINX_SYMFONY_HOST}
-      NGINX_SYMFONY_DIRE: ${NGINX_SYMFONY_DIRE}
+      APACHE_SYMFONY_HOST: ${APACHE_SYMFONY_HOST}
+      APACHE_SYMFONY_DIRE: ${APACHE_SYMFONY_DIRE}
     ports:
       - 80:80
     volumes:

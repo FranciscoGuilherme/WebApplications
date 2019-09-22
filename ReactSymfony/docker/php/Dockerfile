@@ -46,7 +46,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 RUN echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
 RUN echo "dev ALL=(ALL) ALL" > /etc/sudoers
 
-WORKDIR /home/www/app
+WORKDIR /www/symfony/app
 
 EXPOSE 9000
 
