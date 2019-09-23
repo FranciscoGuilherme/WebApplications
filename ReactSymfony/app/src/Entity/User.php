@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     const ALIAS = 'user';
 
@@ -30,6 +31,11 @@ class User
      * @ORM\Column(type="string", length=100)
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $password;
 
     public function getId(): int
     {
@@ -60,12 +66,56 @@ class User
         return $this;
     }
 
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
     public function getFieldsMapped(): array
     {
         return [
             'id AS users__id',
             'name AS users__name',
-            'email AS users__email'
+            'email AS users__email',
+            'password AS users__password'
         ];
+    }
+
+    public function getRoles(): array
+    {
+        return [
+            'ROLE_USER'
+        ];
+    }
+
+    public function getSalt() {}
+
+    public function eraseCredentials() {}
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->name,
+            $this->email,
+            $this->password
+        ]);
+    }
+
+    public function unserialize($string)
+    {
+        list{
+            $this->id,
+            $this->name,
+            $this->email,
+            $this->password
+        } = unserialize($string, ['allowed_classes' => false]);
     }
 }

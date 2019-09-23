@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { Link } from 'react-router-dom';
 
 class Home extends Component {
   render() {
     return (
-      <div>
-        <p>Ola</p>
+      <div className="links">
+          <Link to="/" className="link">Home</Link>
+          <Link to="/about" className="link">About</Link>
       </div>
     )
   }
